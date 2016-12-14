@@ -1,8 +1,12 @@
-final static int SIZE = 240;
+final static int SIZE = 80;
 int cols, rows;
 ArrayList<Cell> grid;
 ArrayList<Cell> stack;
+Boolean Generated = false;
+Cell start;
 Cell current;
+
+Solver solver;
 
 
 void setup() {
@@ -21,10 +25,13 @@ void setup() {
     }
   }
   current = grid.get(0);
+  start = current;
   current.start = true;
   
   int endi = index(cols-1,rows-1);
   grid.get(endi).end = true;
+  
+  solver = new Solver();
 }
 
 void draw() {
@@ -37,26 +44,34 @@ void draw() {
   }
 
   current.visited = true;
-  current.highlight();
-  
-  //STEP 1
-  Cell next = current.checkNeighbors();
-  
-  if (next != null) {
-    next.visited = true;
+  if(!Generated){
+    current.highlight();
+    //STEP 1
+    Cell next = current.checkNeighbors();
     
-    //STEP 2
-    stack.add(current);
-    
-    //STEP 3
-    removeWalls(current,next);
-    
-    //STEP 4
-    current = next;
-  } else {
-    if(stack.size() != 0){
-      current = stack.remove(stack.size()-1);
+    if (next != null) {
+      next.visited = true;
+      
+      //STEP 2
+      stack.add(current);
+      
+      //STEP 3
+      removeWalls(current,next);
+      
+      //STEP 4
+      current = next;
+    } else {
+      if(stack.size() != 0){
+        current = stack.remove(stack.size()-1);
+      }
     }
+    
+    if(current == start){
+      Generated = true;
+    }
+   
+  } else{
+    solver.solve();
   }
 }
 

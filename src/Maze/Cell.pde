@@ -6,6 +6,8 @@ class Cell {
   private boolean visited = false;
   private boolean start = false;
   private boolean end = false;
+  private boolean sol = false;
+  private boolean solCh = false;
 
   Cell(int i, int j) {
     this.i = i;
@@ -21,7 +23,11 @@ class Cell {
     if(walls[2]){line(x+SIZE, y+SIZE, x, y+SIZE);}
     if(walls[3]){line(x, y+SIZE, x, y);}
     
-    if(visited) {
+    if(sol){
+        fill(17,46,214,100);
+        noStroke();
+        rect(x,y,SIZE,SIZE);
+    }else if(visited) {
       if(start){
         fill(99,220,18,100);
         noStroke();
